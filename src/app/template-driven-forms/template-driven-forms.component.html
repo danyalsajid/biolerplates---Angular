@@ -1,0 +1,81 @@
+<form
+    (ngSubmit)="onSubmit()"
+    #f="ngForm"
+>
+    <!-- user name -->
+    <div class="form-group">
+        <label for="username">User Name</label>
+        <input
+            type="text"
+            name="username"
+            class="form-control"
+            [(ngModel)]="username"
+            required
+        >
+        <p>{{username}}</p>
+    </div>
+    <br>
+
+    <!-- email -->
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input
+            type="text"
+            name="email"
+            class="form-control"
+            [ngModel]="'test@abc.com'"
+            required
+            email
+            #email="ngModel"
+        >
+        <p *ngIf="!email.valid && email.touched">Input is wrong!</p>
+    </div>
+    <br>
+
+    <!-- radio buttons -->
+    <div class="form-group">
+        <div
+            class="radio"
+            *ngFor="let gender of genders"
+        >
+            <label>
+                <input
+                    type="radio"
+                    name="gender"
+                    ngModel
+                    [value]="gender"
+                >
+                {{gender}}
+            </label>
+        </div>
+    </div>
+
+    <!-- select options -->
+    <div class="form-group">
+        <label for="secret">Secret Questions</label>
+        <select
+            class="form-control"
+            [ngModel]="defaultQuestion"
+            name="secret"
+        >
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+        </select>
+    </div>
+
+    <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!f.valid"
+    >
+        Submit
+    </button>
+
+    <button
+        class="btn btn-secondary"
+        type="button"
+        (click)=suggest()
+    >
+        Suggest
+    </button>
+</form>

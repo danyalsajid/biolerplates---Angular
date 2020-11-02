@@ -1,0 +1,81 @@
+<form
+    [formGroup]="f"
+    (ngSubmit)="onSubmit()"
+>
+    <!-- user name -->
+    <div class="form-group">
+        <label for="username">User Name</label>
+        <input
+            type="text"
+            class="form-control"
+            formControlName="username"
+        >
+        <span
+            *ngIf="!f.get('username').valid && f.get('username').touched "
+            class="text-danger"
+        >
+            <span *ngIf="!f.get('username').errors['nameIsForbidden'] ">This username is forbidden</span>
+            <span *ngIf="!f.get('username').errors['required'] ">This field is required</span>
+
+        </span>
+    </div>
+    <br>
+
+    <!-- email -->
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input
+            type="text"
+            class="form-control"
+            formControlName="email"
+        >
+        <p *ngIf="!f.get('email').valid && f.get('email').touched">Please enter valid email</p>
+    </div>
+    <br>
+
+    <!-- radio button -->
+    <div class="form-group">
+        <div
+            class="radio"
+            *ngFor="let gender of genders"
+        >
+            <label>
+                <input
+                    type="radio"
+                    [value]="gender"
+                    formControlName="gender"
+                >
+                {{gender}}
+            </label>
+        </div>
+    </div>
+
+    <!-- add new controller -->
+    <h4>Your Hobbies</h4>
+    <button
+        class="btn btn-secondary"
+        type="button"
+        (click)="addHobbies()"
+    >
+        Add Hobbies
+    </button>
+    <div formArrayName="hobbies">
+        <div
+            class="form-group"
+            *ngFor="let hobbyControl of f.get('hobbies')['controls']; let i=index"
+        >
+            <input
+                type="text"
+                [formControlName]="i"
+            >
+        </div>
+    </div>
+
+    <br>
+    <button
+        class="btn btn-primary"
+        type="submit"
+    >
+        Submit
+    </button>
+</form>
