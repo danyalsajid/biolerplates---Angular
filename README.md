@@ -1,11 +1,10 @@
-# Myapp
+# HttpClientModule
 
-This app contains boilerplates for various concepts of Angular.
-This project uses Bootstrap 4 for styling which is added through CDN.
-
-**Switch between different branches to select the concept you want to work on**
+This project contains basic to advance level concepts for using HttpClientModule in Angular.
 
 ## Concepts covered
-- Forms (Template driven & Reactive)
-- Pipe (building custom pipes)
-- HttpClientModule
+- Http requests (GET, POST, DELETE)
+- Attaching headers & params to req
+- Transforming response
+- Interceptors
+- Multiple Interceptors
