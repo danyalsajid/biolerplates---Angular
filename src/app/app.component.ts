@@ -1,31 +1,32 @@
-import { Component } from '@angular/core';
-import { PostsService } from './posts.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy{
+  isAuthenticated = false;
+  private userSub: Subscription;
 
-  constructor(private service: PostsService) { }
+  constructor(private authService: AuthService) {}
 
-  onSubmit() {
-    let postData = {
-      title: "Some title",
-      content: "content"
-    };
+  ngOnInit() {
 
-    this.service.createPost(postData);
+    // auto login
+    this.authService.autoLogin();
+
+    this.userSub = this.authService.user.subscribe(user => this.isAuthenticated = !!user)
   }
 
-  onFetch() {
-    this.service.fetchPost().subscribe(
-      posts => console.log(posts),
-      err => console.log(err.message));
+  onLogout(){
+    this.authService.logout();
   }
 
-  onClear() {
-    this.service.deletePost().subscribe(() => console.log());
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
   }
+
 }

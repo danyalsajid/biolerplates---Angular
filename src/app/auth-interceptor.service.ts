@@ -4,35 +4,29 @@ import {
     HttpEvent,
     HttpHandler,
     HttpRequest,
-    HttpEventType,
+    HttpParams,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { exhaustMap, take } from 'rxjs/operators';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
-    intercept(
-        req: HttpRequest<any>,
-        next: HttpHandler
-    ): Observable<HttpEvent<any>> {
-        // console.log(req.url); 
-        // if(req.url) {} // block or perform specific function upon any url here
+    constructor(private authService: AuthService) { }
 
-        const modifiedRequest = req.clone({ // set headers or params here
-            headers: req.headers.append('Auth', 'xyz')
-        });
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        return this.authService.user.pipe(
+            take(1),        // take operator takes one value and then it unsubscribes the subscription
+            exhaustMap((user) => {      // exhaustMap waits for outer observable to complete, then it replaces the previous observable with the inner observalbe, user obs is get replaced by the http obs in this case
+                if (!user) {
+                    return next.handle(req);
+                }
+                const modifiedRequest = req.clone({
+                    params: new HttpParams().set('auth', user.token),
+                });
 
-        return next.handle(modifiedRequest);
-
-        // optional: in case you want to modify your response. replace tap with map. tap is just used to lookinto the response
-        // or use multiple interceptor to modify your response - used LoggingInterceptor in this project
-        // return next.handle(modifiedRequest) 
-        //     .pipe(tap(event => { 
-        //         if (event.type === HttpEventType.Response) {
-        //             console.log('Response arrived, body data: ');
-        //             console.log(event.body);
-        //         }
-        //     }));
-
+                return next.handle(modifiedRequest);
+            })
+        );
     }
 }

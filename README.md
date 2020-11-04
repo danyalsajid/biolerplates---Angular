@@ -1,10 +1,15 @@
 # HttpClientModule
 
-This project contains basic to advance level concepts for using HttpClientModule in Angular.
+This project implements the boilerplate logic for implementing Authentication service through http module in Angular.
+
+**Used Firebase authentication service for this project**
 
 ## Concepts covered
-- Http requests (GET, POST, DELETE)
-- Attaching headers & params to req
-- Transforming response
-- Interceptors
-- Multiple Interceptors
+- Signup user
+- Login user
+- storing token from backend
+- autologin upon refresh
+- autologout upon token expiration
+- fetch/store data with authenticated user from protected data in the backend
+- Router Guards for restricting access to unauthenticated routes
+- Changing UI based on the authentication status

@@ -1,7 +1,7 @@
-<br>
-<br>
-<button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+<div class=" m-3 d-flex justify-content-end">
+    <a class="btn btn-dark" type="button" *ngIf="!isAuthenticated" [routerLink]="['/auth']" routerLinkActive="d-none" >LogIn / SignUp</a>
+    <button class="btn btn-dark" type="button" *ngIf="isAuthenticated" (click)="onLogout()">Logout</button>
+</div>
 <hr>
-<button class="btn btn-primary" (click)="onFetch()">Fetch</button>
-<hr>
-<button class="btn btn-danger" (click)="onClear()">Clear</button>
+
+<router-outlet></router-outlet>
